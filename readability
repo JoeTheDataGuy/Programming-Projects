@@ -1,0 +1,111 @@
+#include <cs50.h>
+#include <ctype.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+
+string text2 = "Would you like them here or there? I would not like them here or there. I would "
+               "not like them anywhere.";
+
+int count_text(string text);
+
+int main(void)
+{
+    // prompt user for some text
+    string text1 = get_string("Text: ");
+    count_text(text1);
+
+    if (count_text(text1) < 1)
+    {
+        printf("Before Grade 1\n");
+    }
+    else if (count_text(text1) < 2)
+    {
+        printf("Grade 1\n");
+    }
+    else if (count_text(text1) < 3)
+    {
+        printf("Grade 2\n");
+    }
+    else if (count_text(text1) < 4)
+    {
+        printf("Grade 3\n");
+    }
+    else if (count_text(text1) < 5)
+    {
+        printf("Grade 4\n");
+    }
+    else if (count_text(text1) < 6)
+    {
+        printf("Grade 5\n");
+    }
+    else if (count_text(text1) < 7)
+    {
+        printf("Grade 6\n");
+    }
+    else if (count_text(text1) < 8)
+    {
+        printf("Grade 7\n");
+    }
+    else if (count_text(text1) < 9)
+    {
+        printf("Grade 8\n");
+    }
+    else if (count_text(text1) < 10)
+    {
+        printf("Grade 9\n");
+    }
+    else if (count_text(text1) < 11)
+    {
+        printf("Grade 10\n");
+    }
+    else
+    {
+        printf("Grade 16+\n");
+    }
+}
+// count number of letters, words, and sentences in the text
+int count_text(string text)
+{
+    float sentences = 0;
+    float letters = 0;
+    float words = 1;
+    float index = 0;
+
+    for (int i = 0, n = strlen(text); i < n; i++)
+    {
+        // count sentences by punctuation
+        if (text[i] == '.' || text[i] == '?' || text[i] == '!')
+        {
+            sentences += 1;
+        }
+        // count words by checking for spaces
+        // starts at +1 to account for the end of sentence
+        else if (isblank(text[i]))
+        {
+            words += 1;
+        }
+        // count letters, skips spaces and punctuation
+        else
+        {
+            if (ispunct(text[i]))
+            {
+                continue;
+            }
+            else if (isblank(text[i]))
+            {
+                continue;
+            }
+            else
+            {
+                letters += 1;
+            }
+        }
+    }
+    // compute coleman-liau index
+    float L = (letters / words) * 100;
+    float S = (sentences / words) * 100;
+    index = 0.0588 * L - 0.296 * S - 15.8;
+    return round(index);
+}
+// print grade level
