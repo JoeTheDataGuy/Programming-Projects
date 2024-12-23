@@ -1,0 +1,87 @@
+// get input
+#include <cs50.h>
+#include <stdio.h>
+long digit;
+long split(long number);
+long split_one(long number);
+// prompt for input
+long num1;
+long num2;
+long total;
+int main(void)
+{
+    // long number = 378282246310005;
+    // long number = 6176292929;
+    //  long number = 4012000077777777;
+    long number;
+     do
+      {
+    number = get_long("Number: ");
+       }
+    while ( number / 100000000000 <= 0);
+    num1 = split(number);
+    num2 = split_one(number);
+    total = num1 + num2;
+    if (total % 10 == 0)
+    {
+        if ((number / 10000000000000 == 34 || number / 10000000000000 == 37))
+        {
+            printf("AMEX\n");
+        }
+        else if ((number / 100000000000000 == 51 || number / 100000000000000 == 52 ||
+                  number / 100000000000000 == 53 || number / 100000000000000 == 54 ||
+                  number / 100000000000000 == 55))
+        {
+            printf("MASTERCARD\n");
+        }
+        else if ((number / 1000000000000000 == 4 || number / 1000000000000 == 4))
+        {
+            printf("VISA\n");
+        }
+        else
+        {
+            printf("INVALID\n");
+        }
+    }
+    else
+    {
+        printf("INVALID\n");
+    }
+}
+long times_sum;
+long sum;
+long split(long number)
+{
+    while (number > 0)
+    {
+        long second_last_digit = (number / 10) % 10;
+        number /= 100;
+        long times_two = second_last_digit * 2;
+        long digit_one = times_two % 10;
+        long digit_two = times_two / 10;
+        times_sum = times_sum + digit_one + digit_two;
+    }
+    return times_sum;
+}
+long split_one(long number)
+{
+    while (number > 0)
+    {
+        long last_digit = number % 10;
+        number /= 100;
+        sum = sum + last_digit;
+    }
+    return sum;
+}
+
+// determine if AE 15 digits start with 34 or 37
+// mastercard 16 digits start with 51,52,53,54,55
+// visa 13 or 16 digits start with 4
+// multiply every other digit by 2 starting with second to last digit
+// add products digits together not sums
+// add above sum to the sum of the rest of the digits not multiplied by 2
+// if total is 0 number is valid
+
+// calculate checksum
+// check for card length and starting digits
+// print AMEX, MASTERCARD, VISA, or INVALID
